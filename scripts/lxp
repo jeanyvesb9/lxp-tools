@@ -143,7 +143,7 @@ fi
 # Initialize kerberos token
 #------------------------------------------
 # Unless we're using --kerb, first check if we have a valid ticket already
-if [[ "$do_cm_exit_only" = false && ( "$do_kerb_only" = true || $(kerb -c 2>/dev/null) != "There is a valid Kerberos ticket already for "* ) ]]; then
+if [[ "$do_cm_exit_only" = false && "$do_cm_status_only" = false && ( "$do_kerb_only" = true || $(kerb -c 2>/dev/null) != "There is a valid Kerberos ticket already for "* ) ]]; then
     kerb -r $user
 
     if [[ "$do_kerb_only" = true ]]; then
