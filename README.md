@@ -127,7 +127,11 @@ HOST lxtunnel lxtunnel.cern.ch
 
 To avoid having to reach for your phone every time you have to initialize a new SSH CM session to LXPlus, you can store the 2FA `otpauth` master key encrypted in a GPG key on your local machine, and generate new OTPs transparently. As long as you encrypt and follow safe practices on your GPG key, this is just as safe as using TouchID in the cern SSO web-authentication. You also need to have the correct global time in your local computer (same as in your phone if using OTP apps)
 
-The first step is to retrieve the `otpauth` master key for your CERN account. You can export them from the Authenticator app you've been already using. In case the app only allows the export in the form of a QR code (e.g. Google Authenticator), you can either import the QR into another OTP applicaiton that can export `otpauth` URIs, or you can use [this tool](https://github.com/scito/extract_otp_secrets).
+The first step is to retrieve the `otpauth` master key URI for your CERN account. You can export them from the Authenticator app you've been already using. In case the app only allows the export in the form of a QR code (e.g. Google Authenticator), you can either import the QR into another OTP applicaiton that can export `otpauth` URIs, or you can use [this tool](https://github.com/scito/extract_otp_secrets). If your OTP app only provides the alphanumeric secret key (e.g. in Aegis Authenticator), you can construct the necessary `otpauth` master key URI as:
+```
+otpauth://totp/<username>?algorithm=SHA1&digits=6&issuer=CERN&period=30&secret=<secret>
+```
+replacing `<username>` with your CERN account username, and `<secret>` with the alphanumeric secret key.
 
 Before importing the keys into `pass-otp`, if you're not already using `pass`, you'll need to initialize the GPG secret key that will be used as the secure storage. For this, run
 ```
