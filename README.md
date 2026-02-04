@@ -28,7 +28,7 @@ The included tools depend on the following auxiliary packages
 - [rsync](https://rsync.samba.org) (on macOS, you'll also need an updated `rsync` version, which you can install from `brew`).
 
 Optional (and recommended):
-- [kstart](https://www.eyrie.org/~eagle/software/kstart): modified version of `kinit` (`k5start`) which runs as a deamon, to maintain the ticket for a maximum of 7 days (with the CERN configuration).
+- [kstart](https://www.eyrie.org/~eagle/software/kstart): modified version of `kinit` (`k5start`) which runs as a deamon, to maintain the ticket for a maximum of 7 days (with the CERN configuration). **Note:** the last versions for macOS are buggy, and don't allow the tokens to be forwardable through SSH, so your lxp session won't have access to afs or eos! Don't install this package, and `kerb` will use `kinit` instead by default.
 
 Some will be pre-installed, and the remaining ones should be available through `brew` on macOS, or using your Linux distribution package manager.
 
@@ -69,7 +69,7 @@ $ scp username@lxplus.cern.ch:.keytab ~/.keytab
 ```
 The keytab must only be readable by you. The correct permissions should be set by `cern-get-keytab` and carried over through `scp`, but always double check this. If you update your CERN credentials, you'll need to re-generate and copy the keytab.
 
-**Note**: The built-in version of `kinit` in macOS stores passwords in the macOS encrypted keychain when successfully initializing a Kerberos token with `--keychain`, so you could just use that. However, the tools in this repository will use `k5start` if available, which does not support this feature, so setting up a keytab is recommended.
+**Note**: The built-in version of `kinit` in macOS stores passwords in the macOS encrypted keychain when successfully initializing a Kerberos token with `--keychain`, so you could just use that, but setting up a keytab is still recommended.
 
 
 ### SSH client
@@ -151,12 +151,12 @@ Copy the string from the `gpg --list-keys` output, including all spaces between 
 
 Finally, insert the `otpauth` secret key for your CERN account
 ```
-$ pass otp insert cern-username otpauth://totp/...
+$ pass otp insert cern-username
 ```
-The name of the key must be of the form `cern-${username}` to work with the scripts in the repository.
+The name of the key must be of the form `cern-${username}`, like in the example above, to work with the scripts in the repository. When prompted for it, provide the otpauth URI you retrieved before.
 
-You get updated OTPs at any time with
+You can now get updated OTPs at any time with
 ```
 $ pass otp cern-username
 ```
-This is very useful to login to the CERN SSO in machines where you don't have a WebAuth token.
+This is very useful to login to the CERN SSO in machines where you don't have a WebAuth token!
