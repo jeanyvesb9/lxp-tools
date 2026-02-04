@@ -57,7 +57,7 @@ If you are using Oh-My-Zsh, the modification of the `fpath` array has to be inse
 
 ### Kerberos
 
-In order to use Kerberos to authenticate with your CERN account, you'll first need to setup the correct configuration in your local client (`krb5.conf`). Follow the official CERN instructions [here](https://linux.web.cern.ch/docs/kerberos-access/#client-configuration-kerberos).
+In order to use Kerberos to authenticate with your CERN account, you'll first need to setup the correct configuration in your local client (`krb5.conf`). Follow the official CERN instructions [here](https://devices.docs.cern.ch/devices/mac/AboutKerberosAndSsh/#kerberos-config-file-for-users-without-self-service).
 
 To avoid having to introduce your password every time, you'll need to store your Kerberos credentials in a secure local storage. This is done through a _keytab_ file, which can be [automatically generated](https://cern.service-now.com/service-portal?id=kb_article&n=KB0003405) with the correct encryption settings on any LXPlus node running EL9 or higher. Simply, run
 ```
