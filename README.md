@@ -23,7 +23,7 @@ For questions and/or suggestions, please contact me on Mattermost or to `jean.yv
 The included tools depend on the following auxiliary packages
 - [krb5](https://web.mit.edu/kerberos) (no need to install a custom version in macOS, the built-in one works),
 - [pass](https://www.passwordstore.org),
-- [pass-otp](https://github.com/~/pass-otp),
+- [pass-otp](https://github.com/tadfisher/pass-otp),
 - [expect](https://www.nist.gov/services-resources/software/expect),
 - [rsync](https://rsync.samba.org) (on macOS, you'll also need an updated `rsync` version, which you can install from `brew`).
 
