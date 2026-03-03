@@ -191,7 +191,9 @@ target="${user}@$(lxhost $lxhost_arg)"
 #------------------------------------------
 # Get ControlMaster directory path
 #------------------------------------------
-if [[ "$(uname)" == "Linux" ]]; then
+if [[ ! -z "$CM_SOCKET_DIR" ]]; then
+    CM_PATH="$CM_SOCKET_DIR"
+elif [[ "$(uname)" == "Linux" ]]; then
     CM_PATH="/run/user/$(id -u)"
 elif [[ "$(uname)" == "Darwin" ]]; then
     CM_PATH="$HOME/.ssh"
