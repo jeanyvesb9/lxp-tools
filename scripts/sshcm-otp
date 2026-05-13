@@ -13,19 +13,39 @@ set login [lindex $argv 0]
 set otp [lindex $argv 1]
 set timeout 15
 
+# Current SSID
+set ssid ""
+if {![catch {exec uname -s} os]} {
+    switch -- $os {
+        Darwin {
+            catch {
+                set ssid [string trim [exec sh -c {en="$(networksetup -listallhardwareports | awk '/Wi-Fi|AirPort/{getline; print $NF}')"; ipconfig getsummary "$en" | grep -Fxq "  Active : FALSE" || networksetup -listpreferredwirelessnetworks "$en" | sed -n '2s/^\t//p'}]]
+            }
+        }
+        Linux {
+            catch {
+                set ssid [string trim [exec sh -c {iwgetid -r 2>/dev/null || nmcli -t -f ACTIVE,SSID dev wifi 2>/dev/null | awk -F: '$1=="yes"{print $2; exit}'}]]
+            }
+        }
+    }
+}
+
 # Start SSH in the background with control master mode
 puts "Starting ssh ControlMaster session for $login"
 spawn ssh -fNM $login
 
-# Wait for the OTP prompt
-expect {
-    -re "\($login\).*2nd factor.*: " {
-        # Send OTP
-        send -- "$otp\r"
-    }
-    timeout {
-        puts "Timed out waiting for OTP prompt."
-        exit 1
+# If we're in the CERN network, LXPlus 2FA is disabled
+if { $ssid != "CERN" } {
+    # Wait for the OTP prompt
+    expect {
+        -re "\($login\).*2nd factor.*: " {
+            # Send OTP
+            send -- "$otp\r"
+        }
+        timeout {
+            puts "Timed out waiting for OTP prompt."
+            exit 1
+        }
     }
 }
 
