@@ -122,6 +122,23 @@ HOST lxtunnel lxtunnel.cern.ch
     DynamicForward 8090             # Port forward to ATLAS CI/build Jenkins nodes
 ```
 
+To connect VSCode to nodes in the internal CERN network (e.g. to work in the scratch disks of the ATLAS TDAQ testbed), you will need to use a proxy connection through one of the public LXPlus nodes. This can be achieved with the following SSH configuration:
+```
+Host pc-tbed-pub-1 pc-tbed-pub-*
+    User username
+    ProxyJump lxplus.cern.ch
+    ForwardX11 yes
+    ForwardX11Trusted no
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials yes
+    PubkeyAuthentication no
+    ForwardAgent yes
+    CheckHostIP no
+    ServerAliveInterval 100
+```
+In order for any node to show up in the VSCode SSH remote list, they need to be declared explicitly (e.g. `pc-tbed-pub-1` in the previous snippet). You will also need to disable the `Remote.SSH.useLocalServer` option in VSCode.
+
 
 ### 2FA configuration
 
